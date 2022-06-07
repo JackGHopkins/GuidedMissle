@@ -1,2 +1,2 @@
 # GuidedMissle
- Programming Test from 1010 Games
+ Programming Test for 1010 Games.
