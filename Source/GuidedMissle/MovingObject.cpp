@@ -59,7 +59,3 @@ void AMovingObject::ProcessMovementTimeline(float Value)
 	MeshComponent->SetWorldLocationAndRotation(CurrentSplineLocation, CurrentSplineRotation);
 }
 
-void AMovingObject::OnEndMovementTimeline() {
-
-}
-

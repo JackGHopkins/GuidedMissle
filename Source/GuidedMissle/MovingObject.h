@@ -14,7 +14,6 @@ class GUIDEDMISSLE_API AMovingObject : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	AMovingObject();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spline", meta = (AllowPrivateAccess = "true"))
@@ -26,7 +25,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spline")
 	UCurveFloat* MovementCurve;
 
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
@@ -35,12 +33,7 @@ public:
 	UFUNCTION()
 	void ProcessMovementTimeline(float Value);
 
-	UFUNCTION()
-	void OnEndMovementTimeline();
-
-
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
 private:

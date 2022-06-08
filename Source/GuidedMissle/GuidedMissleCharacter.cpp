@@ -39,41 +39,22 @@ AGuidedMissleCharacter::AGuidedMissleCharacter()
 
 void AGuidedMissleCharacter::BeginPlay()
 {
-	// Call the base class  
 	Super::BeginPlay();
-
-}
-
-void AGuidedMissleCharacter::Tick(float DeltaTime)
-{
-
 }
 
 //////////////////////////////////////////////////////////////////////////// Input
 
 void AGuidedMissleCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
-	// Set up gameplay key bindings
 	check(PlayerInputComponent);
 
-	// Bind jump events
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
-
-	// Bind fire event
 	PlayerInputComponent->BindAction("PrimaryAction", IE_Pressed, this, &AGuidedMissleCharacter::OnPrimaryAction);
 	PlayerInputComponent->BindAction("SecondaryAction", IE_Pressed, this, &AGuidedMissleCharacter::OnSecondaryAction);
 
-	// Enable touchscreen input
-	EnableTouchscreenMovement(PlayerInputComponent);
-
-	// Bind movement events
 	PlayerInputComponent->BindAxis("Move Forward / Backward", this, &AGuidedMissleCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("Move Right / Left", this, &AGuidedMissleCharacter::MoveRight);
-
-	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
-	// "Mouse" versions handle devices that provide an absolute delta, such as a mouse.
-	// "Gamepad" versions are for devices that we choose to treat as a rate of change, such as an analog joystick
 	PlayerInputComponent->BindAxis("Turn Right / Left Mouse", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("Look Up / Down Mouse", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("Turn Right / Left Gamepad", this, &AGuidedMissleCharacter::TurnAtRate);
@@ -82,7 +63,6 @@ void AGuidedMissleCharacter::SetupPlayerInputComponent(class UInputComponent* Pl
 
 void AGuidedMissleCharacter::OnPrimaryAction()
 {
-	// Trigger the OnItemUsed Event
 	OnUseItemPrimary.Broadcast();
 }
 
@@ -91,70 +71,24 @@ void AGuidedMissleCharacter::OnSecondaryAction()
 	OnUseItemSecondary.Broadcast();
 }
 
-void AGuidedMissleCharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
-	if (TouchItem.bIsPressed == true)
-	{
-		return;
-	}
-	if ((FingerIndex == TouchItem.FingerIndex) && (TouchItem.bMoved == false))
-	{
-		OnPrimaryAction();
-	}
-	TouchItem.bIsPressed = true;
-	TouchItem.FingerIndex = FingerIndex;
-	TouchItem.Location = Location;
-	TouchItem.bMoved = false;
-}
-
-void AGuidedMissleCharacter::EndTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
-	if (TouchItem.bIsPressed == false)
-	{
-		return;
-	}
-	TouchItem.bIsPressed = false;
-}
-
 void AGuidedMissleCharacter::MoveForward(float Value)
 {
 	if (Value != 0.0f)
-	{
-		// add movement in that direction
 		AddMovementInput(GetActorForwardVector(), Value);
-	}
 }
 
 void AGuidedMissleCharacter::MoveRight(float Value)
 {
 	if (Value != 0.0f)
-	{
-		// add movement in that direction
 		AddMovementInput(GetActorRightVector(), Value);
-	}
 }
 
 void AGuidedMissleCharacter::TurnAtRate(float Rate)
 {
-	// calculate delta for this frame from the rate information
 	AddControllerYawInput(Rate * TurnRateGamepad * GetWorld()->GetDeltaSeconds());
 }
 
 void AGuidedMissleCharacter::LookUpAtRate(float Rate)
 {
-	// calculate delta for this frame from the rate information
 	AddControllerPitchInput(Rate * TurnRateGamepad * GetWorld()->GetDeltaSeconds());
-}
-
-bool AGuidedMissleCharacter::EnableTouchscreenMovement(class UInputComponent* PlayerInputComponent)
-{
-	if (FPlatformMisc::SupportsTouchInput() || GetDefault<UInputSettings>()->bUseMouseForTouch)
-	{
-		PlayerInputComponent->BindTouch(EInputEvent::IE_Pressed, this, &AGuidedMissleCharacter::BeginTouch);
-		PlayerInputComponent->BindTouch(EInputEvent::IE_Released, this, &AGuidedMissleCharacter::EndTouch);
-
-		return true;
-	}
-	
-	return false;
 }
