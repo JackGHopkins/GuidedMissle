@@ -39,7 +39,6 @@ AGuidedMissleProjectile::AGuidedMissleProjectile()
 	PrimaryActorTick.bAllowTickOnDedicatedServer = true;
 
 	FTickFunction = new FActorComponentTickFunction();
-	//FTickFunction->Target = ProjectileMovement;
 	
 	InitialLifeSpan = 10.0f;
 	if (ProjectileMovement->HomingTargetComponent == nullptr)
@@ -48,19 +47,6 @@ AGuidedMissleProjectile::AGuidedMissleProjectile()
 
 AGuidedMissleProjectile::~AGuidedMissleProjectile() {
 	delete FTickFunction;
-}
-
-void AGuidedMissleProjectile::BeginPlay() {
-	Super::BeginPlay();
-	
-}
-
-void AGuidedMissleProjectile::Tick(float DeltaTime) {
-	Super::Tick(DeltaTime);
-	//FindTarget();
-	ProjectileMovement->HomingTargetComponent;
-	ProjectileMovement->TickComponent(DeltaTime, ELevelTick::LEVELTICK_All, FTickFunction);
-
 }
 
 void AGuidedMissleProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)

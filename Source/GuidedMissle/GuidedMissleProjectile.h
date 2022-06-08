@@ -47,9 +47,5 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Projectile)
 	UNiagaraSystem* ExplosionAnimation;
-
-protected:
-	virtual void BeginPlay() override;
-	virtual void Tick(float DeltaTime) override;
 };
 

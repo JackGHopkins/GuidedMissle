@@ -130,28 +130,3 @@ void UTP_WeaponComponent::AttachWeapon(AGuidedMissleCharacter* TargetCharacter)
 	}
 }
 
-void UTP_WeaponComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	if (bIsZoom) {
-		FVector Forward = Character->GetFirstPersonCameraComponent()->GetForwardVector();
-		FVector Origin = Character->GetActorLocation() + (Forward * 100);
-		FVector End = Origin + (Forward * 10000);
-		FHitResult Hit;
-
-		if (GetWorld())
-		{
-			bool bActorHit = GetWorld()->LineTraceSingleByChannel(Hit, Origin, End, ECC_Pawn, FCollisionQueryParams(), FCollisionResponseParams());
-			DrawDebugLine(GetWorld(), Origin, End, FColor::Red, false, 2.f, 0.f, 10.f);
-
-			if (bActorHit && Hit.GetActor()->FindComponentByClass<UMeshComponent>())
-			{
-				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Black, Hit.GetActor()->GetFName().ToString());
-				TargetActor = Hit.GetActor();
-			}
-
-		}
-	}
-}
-
