@@ -1,6 +1,4 @@
 # GuidedMissle
-This is my Programming Test for 1010 Games.
-
 ### How to play:
 You can move around with WASD, shoot with LMB and target with RMB. If your last target was not an actor then (e.g. the sky), then your bullet will not home. You can shoot while aiming.
 
